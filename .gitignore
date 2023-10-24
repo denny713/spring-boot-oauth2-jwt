@@ -34,12 +34,10 @@ nbdist/
 ### Projects ###
 target
 build-repo/
-bootstrap-*.yml
 classes/production/
 nohup.out
 /tools/nohup.out
 git.properties
-#*.properties
 *.env.json
 *.versionsBackup
 *.jar

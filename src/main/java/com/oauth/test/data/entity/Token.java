@@ -1,14 +1,15 @@
 package com.oauth.test.data.entity;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -19,16 +20,16 @@ public class Token implements ClientDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "authorities")
+    @Column(name = "authorities", length = 100)
     private String authorities;
 
-    @Column(name = "client")
+    @Column(name = "client", length = 50)
     private String client;
 
     @Column(name = "approved")
     private Boolean approved;
 
-    @Column(name = "grant_types")
+    @Column(name = "grant_types", length = 50)
     private String grantTypes;
 
     @Column(name = "access_valid")
@@ -37,13 +38,13 @@ public class Token implements ClientDetails {
     @Column(name = "refresh_valid")
     private Integer refreshValid;
 
-    @Column(name = "url")
+    @Column(name = "url", length = 255)
     private String url;
 
-    @Column(name = "scopes")
+    @Column(name = "scopes", length = 100)
     private String scopes;
 
-    @Column(name = "secret")
+    @Column(name = "secret", length = 100)
     private String secret;
 
     @Column(name = "is_scope")
@@ -52,66 +53,78 @@ public class Token implements ClientDetails {
     @Column(name = "is_secret")
     private Boolean isSecret;
 
-    @Column(name = "resources")
+    @Column(name = "resources", length = 100)
     private String resources;
 
     @Override
     public String getClientId() {
-        return null;
+        return client;
     }
 
     @Override
     public Set<String> getResourceIds() {
-        return null;
+        Set<String> res = new HashSet<>();
+        res.add(resources);
+        return res;
     }
 
     @Override
     public boolean isSecretRequired() {
-        return false;
+        return isSecret;
     }
 
     @Override
     public String getClientSecret() {
-        return null;
+        return secret;
     }
 
     @Override
     public boolean isScoped() {
-        return false;
+        return isScope;
     }
 
     @Override
     public Set<String> getScope() {
-        return null;
+        return new HashSet<>(Arrays.asList(scopes.split(",")));
+    }
+
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> grants = new HashSet<>();
+        String[] strs = authorities.split(",");
+        for (String atr : strs) {
+            grants.add(new SimpleGrantedAuthority(atr));
+        }
+        return grants;
     }
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return null;
+        return new HashSet<>(Arrays.asList(grantTypes.split(",")));
     }
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return null;
+        return url != null ? new HashSet<>(Arrays.asList(url.split(","))) : new HashSet<>();
     }
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return null;
+        return accessValid;
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        return null;
+        return refreshValid;
     }
 
     @Override
     public boolean isAutoApprove(String s) {
-        return false;
+        return approved;
     }
 
     @Override
     public Map<String, Object> getAdditionalInformation() {
-        return null;
+        return Collections.emptyMap();
     }
 }
