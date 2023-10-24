@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: oauth2-test
+  datasource:
+    url: jdbc:mysql://localhost:3306/crud_demo?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8
+    username: root
+    password: p@ssw0rd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 7120
+  servlet:
+    context-path: /api
+    session:
+      timeout: 1
+  error:
+    path: /error
+    whitelabel:
+      enabled: true
+auth:
+  secret: s3cR3tK3y
