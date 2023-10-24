@@ -18,7 +18,7 @@ public class Token implements ClientDetails {
 
     @Id
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "authorities", length = 100)
     private String authorities;
